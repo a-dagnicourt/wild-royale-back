@@ -9,7 +9,7 @@ const router = express.Router();
  * A property (with id for output display)
  * @typedef {object} DisplayProperty
  * @property {number} id.required - 1
- * @property {string} label - "Follow The Market"
+ * @property {string} label - "Outstanding castle"
  * @property {string} lat - "100.0000"
  * @property {string} long - "-10.0000"
  * @property {string} pictureUrl - "https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg",
@@ -19,7 +19,7 @@ const router = express.Router();
 /**
  * A property
  * @typedef {object} Property
- * @property {string} label - "Follow The Market"
+ * @property {string} label - "Outstanding castle"
  * @property {string} lat - "100.0000"
  * @property {string} long - "-10.0000"
  * @property {string} pictureUrl - "https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg",
@@ -39,7 +39,7 @@ router.get('/', checkToken, async (req, res, next) => {
   const { name } = req.query;
 
   try {
-    // Gets all properties with their users.
+    // Gets all properties with their pictures and reservations.
     const properties = await prisma.property.findMany({
       where: {
         label: name,
@@ -69,7 +69,7 @@ router.get('/:id', checkToken, async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    // Gets a unique property by its id with its users.
+    // Gets a unique property by its id with its pictures and reservations.
     const properties = await prisma.property.findUnique({
       where: {
         id: parseInt(id, 10),
@@ -98,7 +98,6 @@ router.get('/:id', checkToken, async (req, res, next) => {
  * @security bearerAuth
  */
 
-// Open route for signup purpose
 router.post(
   '/',
   checkToken,

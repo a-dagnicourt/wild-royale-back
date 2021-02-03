@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-param-reassign */
 const express = require('express');
 const { valRes, valResForUpdate } = require('../joiSchemas');
 const prisma = require('../prismaClient');
@@ -45,7 +44,7 @@ const router = express.Router();
  */
 router.get('/', checkToken, async (req, res, next) => {
   try {
-    // Gets all reservations with his user and property infos.
+    // Gets all reservations with his users and properties infos.
     const reservations = await prisma.reservation.findMany({
       include: { property: true, user: true },
     });
@@ -71,7 +70,7 @@ router.get('/', checkToken, async (req, res, next) => {
 router.get('/:id', checkToken, async (req, res, next) => {
   const { id } = req.params;
   try {
-    // Gets a unique reservation by his id with his user and property infos.
+    // Gets a unique reservation by his id with its users and properties infos.
     const reservation = await prisma.reservation.findUnique({
       where: {
         id: parseInt(id, 10),

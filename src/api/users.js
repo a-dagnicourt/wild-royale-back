@@ -47,9 +47,9 @@ const router = express.Router();
  * @return {object} 400 - Bad request
  * @security bearerAuth
  */
-router.get('/', checkToken, async (req, res, next) => {
+router.get('/', checkToken, checkRole(true), async (req, res, next) => {
   try {
-    // Gets all users with their role, companies, products owned and notifications preferences.
+    // Gets all users with their reservations
     const users = await prisma.user.findMany({
       include: { reservation: true },
     });
@@ -72,10 +72,10 @@ router.get('/', checkToken, async (req, res, next) => {
  * @return {object} 404 - User not found
  * @security bearerAuth
  */
-router.get('/:id', checkToken, async (req, res, next) => {
+router.get('/:id', checkToken, checkRole(true), async (req, res, next) => {
   const { id } = req.params;
   try {
-    // Gets a unique user by his id with his role, companies, products owned and notifications preferences.
+    // Gets a unique user by his id with his reservations.
     const user = await prisma.user.findUnique({
       where: {
         id: parseInt(id, 10),
@@ -108,7 +108,7 @@ router.get('/:id', checkToken, async (req, res, next) => {
 router.post('/', joiValidation(valUser), async (req, res, next) => {
   const { password, firstname, lastname, email } = req.body;
   try {
-    // Creates a user with all infos infos provided by body and connect it to a temporary 'prospect' role and to a company with it's provided SIRET
+    // Creates a user with all infos infos provided by body
     const user = await prisma.user.create({
       data: {
         password: hashPassword(password),

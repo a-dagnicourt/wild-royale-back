@@ -143,16 +143,14 @@ describe('PUT methods for families', () => {
 });
 // FAMILIES DELETE
 describe('DELETE methods for families', () => {
-  // Deactivated due to use of raw SQL query in user route
-
-  // it('DELETE / error (wrong id)', async () => {
-  //   const res = await supertest(app)
-  //     .delete('/api/v0/families/0')
-  //     .set({ Authorization: `Bearer ${token}` })
-  //     .expect(404)
-  //     .expect('Content-Type', /json/);
-  //   expect(res.body).toHaveProperty('message');
-  // });
+  it('DELETE / error (wrong id)', async () => {
+    const res = await supertest(app)
+      .delete('/api/v0/families/0')
+      .set({ Authorization: `Bearer ${token}` })
+      .expect(404)
+      .expect('Content-Type', /json/);
+    expect(res.body).toHaveProperty('message');
+  });
   it('DELETE / OK (user successfully deleted)', async () => {
     await supertest(app)
       .delete('/api/v0/families/6')

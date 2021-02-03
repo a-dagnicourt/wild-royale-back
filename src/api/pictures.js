@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-param-reassign */
 const express = require('express');
 const { valPicture, valPictureForUpdate } = require('../joiSchemas');
 const prisma = require('../prismaClient');
@@ -41,7 +39,7 @@ const router = express.Router();
  */
 router.get('/', checkToken, async (req, res, next) => {
   try {
-    // Gets all pictures with their role, companies, products owned and notifications preferences.
+    // Gets all pictures with their properties.
     const pictures = await prisma.picture.findMany({
       include: { property: true },
     });
@@ -67,7 +65,7 @@ router.get('/', checkToken, async (req, res, next) => {
 router.get('/:id', checkToken, async (req, res, next) => {
   const { id } = req.params;
   try {
-    // Gets a unique picture by his id with his role, companies, products owned and notifications preferences.
+    // Gets a unique picture by his id with its properties.
     const picture = await prisma.picture.findUnique({
       where: {
         id: parseInt(id, 10),
@@ -105,7 +103,7 @@ router.post(
   async (req, res, next) => {
     const { url, alt, property } = req.body;
     try {
-      // Creates a picture with all infos infos provided by body and connect it to a temporary 'prospect' role and to a company with it's provided SIRET
+      // Creates a picture with all infos infos provided by body
       const picture = await prisma.picture.create({
         data: {
           url,

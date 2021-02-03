@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-param-reassign */
 const express = require('express');
 const { valFamily, valFamilyForUpdate } = require('../joiSchemas');
 const prisma = require('../prismaClient');
@@ -46,9 +44,9 @@ const router = express.Router();
  * @return {object} 400 - Bad request
  * @security bearerAuth
  */
-router.get('/', checkToken, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    // Gets all families with their role, companies, products owned and notifications preferences.
+    // Gets all families
     const families = await prisma.family.findMany();
     // Returns a 200 'OK' HTTP code response + all infos JSON
     return res.status(200).json(families);
@@ -69,10 +67,10 @@ router.get('/', checkToken, async (req, res, next) => {
  * @return {object} 404 - family not found
  * @security bearerAuth
  */
-router.get('/:id', checkToken, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
-    // Gets a unique family by his id with his role, companies, products owned and notifications preferences.
+    // Gets a unique family by his id
     const family = await prisma.family.findUnique({
       where: {
         id: parseInt(id, 10),
@@ -100,24 +98,30 @@ router.get('/:id', checkToken, async (req, res, next) => {
  * @return {object} 422 - Bad data entries
  * @security bearerAuth
  */
-// Open route for signup purpose
-router.post('/', joiValidation(valFamily), async (req, res, next) => {
-  const data = req.body;
-  try {
-    // Creates a family with all infos infos provided by body and connect it to a temporary 'prospect' role and to a company with it's provided SIRET
-    const family = await prisma.family.create({
-      data,
-    });
-    // Deletes password field from response for security purpose
-    delete family.password;
-    // Returns a 201 'Created' HTTP code response + all infos JSON
-    return res.status(201).json(family);
-  } catch (error) {
-    // Returns a 422 'Bad Request' if any error occurs in creation processus
-    res.status(422);
-    return next(error);
+router.post(
+  '/',
+  checkToken,
+  // Allows only admin
+  checkRole(true),
+  joiValidation(valFamily),
+  async (req, res, next) => {
+    const data = req.body;
+    try {
+      // Creates a family with all infos infos provided by body
+      const family = await prisma.family.create({
+        data,
+      });
+      // Deletes password field from response for security purpose
+      delete family.password;
+      // Returns a 201 'Created' HTTP code response + all infos JSON
+      return res.status(201).json(family);
+    } catch (error) {
+      // Returns a 422 'Bad Request' if any error occurs in creation processus
+      res.status(422);
+      return next(error);
+    }
   }
-});
+);
 
 /**
  * DELETE /api/v0/families/{id}
@@ -137,7 +141,7 @@ router.delete(
     const { id } = req.params;
     try {
       // Gets the id provided family
-      const family = await prisma.family.findUnique({
+      const family = await prisma.family.delete({
         where: {
           id: parseInt(id, 10),
         },
@@ -146,8 +150,6 @@ router.delete(
       if (!family) {
         return next();
       }
-      // Deletes family from database by its id. As Prisma is unable to handle cascading delete for now, uses Raw SQL instead
-      await prisma.$executeRaw`DELETE FROM family WHERE id = ${id};`;
       // Returns a 204 'Deleted' HTTP code response + all infos JSON
       return res.sendStatus(204);
     } catch (error) {
