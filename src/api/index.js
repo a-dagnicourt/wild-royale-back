@@ -2,7 +2,7 @@ const express = require('express');
 
 const users = require('./users');
 const roles = require('./roles');
-const companies = require('./companies');
+const properties = require('./properties');
 const notifications = require('./notifications');
 const products = require('./products');
 const auth = require('./auth');
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 
 router.use('/users', users);
 router.use('/roles', roles);
-router.use('/companies', companies);
+router.use('/properties', properties);
 router.use('/notifications', notifications);
 router.use('/products', products);
 router.use('/auth', auth);

@@ -8,7 +8,7 @@ beforeAll((done) => {
   supertest(app)
     .post('/api/v0/auth/login')
     .send({
-      email: 'nblicq@followthemarket.fr',
+      email: 'admin@wildroyale.fr',
       password: 'P@ssw0rd',
     })
     .end((err, response) => {
@@ -17,20 +17,20 @@ beforeAll((done) => {
     });
 });
 
-// COMPANIES GET
-describe('GET methods for companies', () => {
-  it('GET /api/v0/companies', async () => {
+// PROPERTIES GET
+describe('GET methods for properties', () => {
+  it('GET /api/v0/properties', async () => {
     await supertest(app)
-      .get('/api/v0/companies')
+      .get('/api/v0/properties')
       .set({ Authorization: `Bearer ${token}` })
       .expect(200)
       .expect('Content-Type', /json/);
   });
 });
-describe('GET /api/v0/companies/:id', () => {
+describe('GET /api/v0/properties/:id', () => {
   it('GET / error (user not found)', async () => {
     const res = await supertest(app)
-      .get('/api/v0/companies/0')
+      .get('/api/v0/properties/0')
       .set({ Authorization: `Bearer ${token}` })
       .expect(404)
       .expect('Content-Type', /json/);
@@ -38,18 +38,18 @@ describe('GET /api/v0/companies/:id', () => {
   });
   it('GET / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .get('/api/v0/companies/1')
+      .get('/api/v0/properties/1')
       .set({ Authorization: `Bearer ${token}` })
       .expect(200)
       .expect('Content-Type', /json/);
     expect(res.body).toHaveProperty('id');
   });
 });
-// COMPANIES POST
-describe('POST methods for companies', () => {
+// PROPERTIES POST
+describe('POST methods for properties', () => {
   it('POST / error (fields missing)', async () => {
     const res = await supertest(app)
-      .post('/api/v0/companies')
+      .post('/api/v0/properties')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
       .expect(422)
@@ -58,46 +58,37 @@ describe('POST methods for companies', () => {
   });
   it('POST / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .post('/api/v0/companies')
+      .post('/api/v0/properties')
       .set({ Authorization: `Bearer ${token}` })
       .send({
-        label: "O'Connor @-Net Company",
-        SIRET_number: '12345678912340',
-        VAT_number: 'FR12123456780',
-        city: 'Saint-Germain en Laie',
-        zip_code: '40400',
-        street: "404, route de l'erreur, BIS 2, Bât 3",
-        country: 'FR',
+        label: "Château del'arte",
+        lat: '-10.0000',
+        long: '100.0000',
+        pictureUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg',
+        pictureAlt: "The incredible del'arte Castle !",
       })
       .expect(201)
       .expect('Content-Type', /json/);
     const expected = {
-      id: 2,
-      label: "O'Connor @-Net Company",
-      SIRET_number: '12345678912340',
-      VAT_number: 'FR12123456780',
-      city: 'Saint-Germain en Laie',
-      zip_code: '40400',
-      street: "404, route de l'erreur, BIS 2, Bât 3",
-      country: 'FR',
+      id: 6,
+      label: "Château del'arte",
+      lat: '-10.0000',
+      long: '100.0000',
     };
     expect(res.body).toEqual(expected);
   });
 });
-// COMPANIES PUT
-describe('PUT methods for companies', () => {
+// PROPERTIES PUT
+describe('PUT methods for properties', () => {
   it('PUT / error (wrong id)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/companies/0')
+      .put('/api/v0/properties/0')
       .set({ Authorization: `Bearer ${token}` })
       .send({
-        label: "O'Connor @-Net Company",
-        SIRET_number: '12345678912340',
-        VAT_number: 'FR12123456780',
-        city: 'Saint-Germain en Laie',
-        zip_code: '40400',
-        street: "404, route de l'erreur, BIS 2, Bât 3",
-        country: 'FR',
+        label: "Château del'arte de-la tour",
+        lat: '-10.0000',
+        long: '100.0000',
       })
       .expect(404)
       .expect('Content-Type', /json/);
@@ -105,7 +96,7 @@ describe('PUT methods for companies', () => {
   });
   it('PUT / error (fields missing)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/companies/2')
+      .put('/api/v0/properties/6')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
       .expect(422)
@@ -114,39 +105,31 @@ describe('PUT methods for companies', () => {
   });
   it('PUT / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/companies/2')
+      .put('/api/v0/properties/6')
       .set({ Authorization: `Bearer ${token}` })
       .send({
-        label: "O'Connor @-Net Company",
-        SIRET_number: '12345678912340',
-        VAT_number: 'FR12123456780',
-        city: 'Saint-Germain en Laie',
-        zip_code: '40400',
-        street: "404, route de l'erreur, BIS 2, Bât 3",
-        country: 'FR',
+        label: "Château del'arte de-la tour",
+        lat: '-10.0000',
+        long: '100.0000',
       })
       .expect(200)
       .expect('Content-Type', /json/);
 
     const expected = {
-      id: 2,
-      label: "O'Connor @-Net Company",
-      SIRET_number: '12345678912340',
-      VAT_number: 'FR12123456780',
-      city: 'Saint-Germain en Laie',
-      zip_code: '40400',
-      street: "404, route de l'erreur, BIS 2, Bât 3",
-      country: 'FR',
+      id: 6,
+      label: "Château del'arte de-la tour",
+      lat: '-10.0000',
+      long: '100.0000',
     };
     expect(res.body).toEqual(expected);
   });
 });
 
-// COMPANIES DELETE
-describe('DELETE methods for companies', () => {
+// PROPERTIES DELETE
+describe('DELETE methods for properties', () => {
   it('DELETE / error (wrong id)', async () => {
     const res = await supertest(app)
-      .delete('/api/v0/companies/0')
+      .delete('/api/v0/properties/0')
       .set({ Authorization: `Bearer ${token}` })
       .expect(404)
       .expect('Content-Type', /json/);
@@ -154,7 +137,7 @@ describe('DELETE methods for companies', () => {
   });
   it('DELETE / OK (company successfully deleted)', async () => {
     await supertest(app)
-      .delete('/api/v0/companies/2')
+      .delete('/api/v0/properties/6')
       .set({ Authorization: `Bearer ${token}` })
       .expect(204);
   });

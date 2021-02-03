@@ -69,33 +69,24 @@ const valNotif = Joi.object().keys({
   id_user: Joi.number().integer().required(),
 });
 
-const valCompany = Joi.object().keys({
-  // Company label must be a 3 to 30 long string (ex: Super-Net @gency 2000 !)
+const valProperty = Joi.object().keys({
+  // Property label must be a 3 to 30 long string (ex: Super-Net @gency 2000 !)
   label: Joi.string().min(3).max(30).required(),
-  // Company SIRET number must contain 14 numbers (ex: 12345678912345)
-  SIRET_number: Joi.string()
-    .regex(/^[0-9]{14}$/)
-    .required(),
-  // Company VAT number must contain FR followed by 11 numbers (ex: FR12123456789) /!\ Would need update for international market /!\
-  VAT_number: Joi.string()
-    .regex(/^(FR)[0-9]{11}$/)
-    .required(),
-  // Company city can be 3 to 30 char long, contain multiple words separated by whitespace, ' or - and must end by a letter (ex: Scharrachbergheim – Irmstett)
-  city: Joi.string()
-    .regex(/^[A-zÀ-ÿ]+((?:. |-| |')*[A-zÀ-ÿ])*$/)
-    .min(3)
-    .max(30)
-    .required(),
-  // Company Zip Code must be 5 numbers long (ex: 59000)
-  zip_code: Joi.string().length(5).required(),
-  // Company street address must be a 5 to 80 char long string
-  street: Joi.string().min(5).max(80).required(),
-  // Company country must be a valid ISO 3166-1 alpha-2 code (ex: FR)
-  country: Joi.string()
-    .regex(
-      /^A[^ABCHJKNPVY]|B[^CKPUX]|C[^BEJPQST]|D[EJKMOZ]|E[CEGHRST]|F[IJKMOR]|G[^CJKOVXZ]|H[KMNRTU]|I[DELMNOQRST]|J[EMOP]|K[EGHIMNPRWYZ]|L[ABCIKRSTUVY]|M[^BIJ]|N[ACEFGILOPRUZ]|OM|P[^BCDIJOPQUVXZ]|QA|R[EOSUW]|S[^FPQUW]|T[^ABEIPQSUXY]|U[AGMSYZ]|V[ACEGINU]|WF|WS|YE|YT|Z[AMW]$/
-    )
-    .required(),
+  // Property lat & longmust be 6 to 9 long string (ex: -100.0000)
+  lat: Joi.string().min(6).max(8).required(),
+  long: Joi.string().min(6).max(9).required(),
+  // Property picutre must be a valid url (ex: "https://test.com/test.jpg")
+  pictureUrl: Joi.string().uri().required(),
+  // Property label must be a 3 to 60 long string (ex: Wow incredible castle !)
+  pictureAlt: Joi.string().min(3).max(60).required(),
+});
+
+const valPropertyForUpdate = Joi.object().keys({
+  // Property label must be a 3 to 30 long string (ex: Super-Net @gency 2000 !)
+  label: Joi.string().min(3).max(30).required(),
+  // Property lat & longmust be 6 to 9 long string (ex: -100.0000)
+  lat: Joi.string().min(6).max(8).required(),
+  long: Joi.string().min(6).max(9).required(),
 });
 
 module.exports = {
@@ -104,5 +95,6 @@ module.exports = {
   valRole,
   valProduct,
   valNotif,
-  valCompany,
+  valProperty,
+  valPropertyForUpdate,
 };

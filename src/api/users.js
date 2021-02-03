@@ -72,34 +72,28 @@ router.get('/', checkToken, async (req, res, next) => {
  * @return {object} 404 - User not found
  * @security bearerAuth
  */
-router.get(
-  '/:id',
-  checkToken,
-  // Allows only admin
-  checkRole(true),
-  async (req, res, next) => {
-    const { id } = req.params;
-    try {
-      // Gets a unique user by his id with his role, companies, products owned and notifications preferences.
-      const user = await prisma.user.findUnique({
-        where: {
-          id: parseInt(id, 10),
-        },
-        include: { reservation: true },
-      });
+router.get('/:id', checkToken, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    // Gets a unique user by his id with his role, companies, products owned and notifications preferences.
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      },
+      include: { reservation: true },
+    });
 
-      if (!user) {
-        return next();
-      }
-
-      return res.status(200).json(user);
-    } catch (error) {
-      // Returns a 404 'Not Found' if any error occurs
-      res.status(404);
-      return next(error);
+    if (!user) {
+      return next();
     }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    // Returns a 404 'Not Found' if any error occurs
+    res.status(404);
+    return next(error);
   }
-);
+});
 
 /**
  * POST /api/v0/users
