@@ -8,7 +8,7 @@ describe('POST methods for auth', () => {
     const res = await supertest(app)
       .post('/api/v0/auth/login')
       .send({
-        email: 'nblicq@followthemarket.fr',
+        email: 'admin@wildroyale.fr',
       })
       .expect(422)
       .expect('Content-Type', /json/);
@@ -18,7 +18,7 @@ describe('POST methods for auth', () => {
     const res = await supertest(app)
       .post('/api/v0/auth/login')
       .send({
-        email: 'fail@followthemarket.fr',
+        email: 'fail@wildroyale.fr',
         password: 'P@ssw0rd',
       })
       .expect(404)
@@ -29,7 +29,7 @@ describe('POST methods for auth', () => {
     const res = await supertest(app)
       .post('/api/v0/auth/login')
       .send({
-        email: 'nblicq@followthemarket.fr',
+        email: 'admin@wildroyale.fr',
         password: 'F41lP@ssw0rd',
       })
       .expect(401)
@@ -40,7 +40,7 @@ describe('POST methods for auth', () => {
     const res = await supertest(app)
       .post('/api/v0/auth/login')
       .send({
-        email: 'nblicq@followthemarket.fr',
+        email: 'admin@wildroyale.fr',
         password: 'P@ssw0rd',
       })
       .expect(200)

@@ -1,7 +1,6 @@
 const supertest = require('supertest');
 const app = require('../src/app');
 const prisma = require('../src/prismaClient');
-const { hashPassword } = require('../src/util');
 
 let token;
 
@@ -18,39 +17,11 @@ beforeAll((done) => {
     });
 });
 
-// USERS GET
-describe('GET methods for users', () => {
-  it('GET /api/v0/users', async () => {
-    await supertest(app)
-      .get('/api/v0/users')
-      .set({ Authorization: `Bearer ${token}` })
-      .expect(200)
-      .expect('Content-Type', /json/);
-  });
-});
-describe('GET /api/v0/users/:id', () => {
-  it('GET / error (user not found)', async () => {
-    const res = await supertest(app)
-      .get('/api/v0/users/0')
-      .set({ Authorization: `Bearer ${token}` })
-      .expect(404)
-      .expect('Content-Type', /json/);
-    expect(res.body).toHaveProperty('stack');
-  });
-  it('GET / OK (fields provided)', async () => {
-    const res = await supertest(app)
-      .get('/api/v0/users/1')
-      .set({ Authorization: `Bearer ${token}` })
-      .expect(200)
-      .expect('Content-Type', /json/);
-    expect(res.body).toHaveProperty('id');
-  });
-});
-// USERS POST
-describe('POST methods for users', () => {
+// RESERVATIONS POST
+describe('POST methods for reservations', () => {
   it('POST / error (fields missing)', async () => {
     const res = await supertest(app)
-      .post('/api/v0/users')
+      .post('/api/v0/reservations')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
       .expect(422)
@@ -59,39 +30,60 @@ describe('POST methods for users', () => {
   });
   it('POST / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .post('/api/v0/users')
+      .post('/api/v0/reservations')
       .set({ Authorization: `Bearer ${token}` })
       .send({
-        email: 'jeantest@wcs.fr',
-        password: hashPassword('P@ssw0rdÿ'),
-        firstname: 'José Michel',
-        lastname: "O'Connor",
-        isAdmin: false,
+        property: 1,
+        user: 1,
+        start_date: '2021-01-01T00:00:00.000Z',
+        end_date: '2021-01-01T00:00:00.000Z',
       })
       .expect(201)
       .expect('Content-Type', /json/);
-    const expected = {
-      id: 2,
-      email: 'jeantest@wcs.fr',
-      firstname: 'José Michel',
-      lastname: "O'Connor",
-      isAdmin: false,
-    };
-    expect(res.body).toEqual(expected);
+    expect(res.body).toHaveProperty('id_user');
   });
 });
-// USERS PUT
-describe('PUT methods for users', () => {
+
+// RESERVATIONS GET
+describe('GET methods for reservations', () => {
+  it('GET /api/v0/reservations', async () => {
+    await supertest(app)
+      .get('/api/v0/reservations')
+      .set({ Authorization: `Bearer ${token}` })
+      .expect(200)
+      .expect('Content-Type', /json/);
+  });
+});
+describe('GET /api/v0/reservations/:id', () => {
+  it('GET / error (user not found)', async () => {
+    const res = await supertest(app)
+      .get('/api/v0/reservations/0')
+      .set({ Authorization: `Bearer ${token}` })
+      .expect(404)
+      .expect('Content-Type', /json/);
+    expect(res.body).toHaveProperty('stack');
+  });
+  it('GET / OK (fields provided)', async () => {
+    const res = await supertest(app)
+      .get('/api/v0/reservations/1')
+      .set({ Authorization: `Bearer ${token}` })
+      .expect(200)
+      .expect('Content-Type', /json/);
+    expect(res.body).toHaveProperty('id');
+  });
+});
+
+// RESERVATIONS PUT
+describe('PUT methods for reservations', () => {
   it('PUT / error (wrong id)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/users/0')
+      .put('/api/v0/reservations/0')
       .set({ Authorization: `Bearer ${token}` })
       .send({
-        password: hashPassword('P@ssw0rdÿ'),
-        email: 'jeantest@wcs.fr',
-        firstname: 'José Michel',
-        lastname: "O'Connor",
-        isAdmin: false,
+        property: 1,
+        user: 1,
+        start_date: '2021-01-01T00:00:00.000Z',
+        end_date: '2021-01-01T00:00:00.000Z',
       })
       .expect(404)
       .expect('Content-Type', /json/);
@@ -99,44 +91,35 @@ describe('PUT methods for users', () => {
   });
   it('PUT / error (fields missing)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/users/2')
+      .put('/api/v0/reservations/1')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
-      .expect(404)
+      .expect(422)
       .expect('Content-Type', /json/);
     expect(res.body).toHaveProperty('message');
   });
   it('PUT / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/users/2')
+      .put('/api/v0/reservations/1')
       .set({ Authorization: `Bearer ${token}` })
       .send({
-        password: hashPassword('P@ssw0rdÿ'),
-        email: 'jeantest@wcs.fr',
-        firstname: 'José Michel',
-        lastname: "O'Connor",
-        isAdmin: false,
+        property: 1,
+        user: 1,
+        start_date: '2021-01-01T00:00:00.000Z',
+        end_date: '2021-01-01T00:00:00.000Z',
       })
       .expect(200)
       .expect('Content-Type', /json/);
-
-    const expected = {
-      id: 2,
-      email: 'jeantest@wcs.fr',
-      firstname: 'José Michel',
-      lastname: "O'Connor",
-      isAdmin: false,
-    };
-    expect(res.body).toEqual(expected);
+    expect(res.body).toHaveProperty('id_user');
   });
 });
-// USERS DELETE
-describe('DELETE methods for users', () => {
+// RESERVATIONS DELETE
+describe('DELETE methods for reservations', () => {
   // Deactivated due to use of raw SQL query in user route
 
   // it('DELETE / error (wrong id)', async () => {
   //   const res = await supertest(app)
-  //     .delete('/api/v0/users/0')
+  //     .delete('/api/v0/reservations/0')
   //     .set({ Authorization: `Bearer ${token}` })
   //     .expect(404)
   //     .expect('Content-Type', /json/);
@@ -144,7 +127,7 @@ describe('DELETE methods for users', () => {
   // });
   it('DELETE / OK (user successfully deleted)', async () => {
     await supertest(app)
-      .delete('/api/v0/users/2')
+      .delete('/api/v0/reservations/1')
       .set({ Authorization: `Bearer ${token}` })
       .expect(204);
   });

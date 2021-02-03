@@ -8,7 +8,7 @@ beforeAll((done) => {
   supertest(app)
     .post('/api/v0/auth/login')
     .send({
-      email: 'nblicq@followthemarket.fr',
+      email: 'admin@wildroyale.fr',
       password: 'P@ssw0rd',
     })
     .end((err, response) => {
@@ -17,20 +17,20 @@ beforeAll((done) => {
     });
 });
 
-// NOTIFICATIONS GET
-describe('GET methods for notifications', () => {
-  it('GET /api/v0/notifications', async () => {
+// FAMILIES GET
+describe('GET methods for families', () => {
+  it('GET /api/v0/families', async () => {
     await supertest(app)
-      .get('/api/v0/notifications')
+      .get('/api/v0/families')
       .set({ Authorization: `Bearer ${token}` })
       .expect(200)
       .expect('Content-Type', /json/);
   });
 });
-describe('GET /api/v0/notifications/:id', () => {
+describe('GET /api/v0/families/:id', () => {
   it('GET / error (user not found)', async () => {
     const res = await supertest(app)
-      .get('/api/v0/notifications/0')
+      .get('/api/v0/families/0')
       .set({ Authorization: `Bearer ${token}` })
       .expect(404)
       .expect('Content-Type', /json/);
@@ -38,18 +38,18 @@ describe('GET /api/v0/notifications/:id', () => {
   });
   it('GET / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .get('/api/v0/notifications/1')
+      .get('/api/v0/families/1')
       .set({ Authorization: `Bearer ${token}` })
       .expect(200)
       .expect('Content-Type', /json/);
     expect(res.body).toHaveProperty('id');
   });
 });
-// NOTIFICATIONS POST
-describe('POST methods for notifications', () => {
+// FAMILIES POST
+describe('POST methods for families', () => {
   it('POST / error (fields missing)', async () => {
     const res = await supertest(app)
-      .post('/api/v0/notifications')
+      .post('/api/v0/families')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
       .expect(422)
@@ -58,43 +58,46 @@ describe('POST methods for notifications', () => {
   });
   it('POST / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .post('/api/v0/notifications')
+      .post('/api/v0/families')
       .set({ Authorization: `Bearer ${token}` })
       .send({
-        zone: 'Pays Basque',
-        vertical_trade: 'Kebabier',
-        sms: false,
-        email: true,
-
-        id_user: 1,
+        firstname: 'Jean-Edouard',
+        lastname: 'Test de la Haute',
+        mail: 'jetestdlhaute@test.com',
+        github: 'https://github.com/jetestdlhaute',
+        zone: 'BAB',
+        picture:
+          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
       })
       .expect(201)
       .expect('Content-Type', /json/);
     const expected = {
-      id: 2,
-      zone: 'Pays Basque',
-      vertical_trade: 'Kebabier',
-      sms: false,
-      email: true,
-
-      id_user: 1,
+      id: 6,
+      firstname: 'Jean-Edouard',
+      lastname: 'Test de la Haute',
+      mail: 'jetestdlhaute@test.com',
+      github: 'https://github.com/jetestdlhaute',
+      zone: 'BAB',
+      picture:
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
     };
     expect(res.body).toEqual(expected);
   });
 });
-// NOTIFICATIONS PUT
-describe('PUT methods for notifications', () => {
+// FAMILIES PUT
+describe('PUT methods for families', () => {
   it('PUT / error (wrong id)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/notifications/0')
+      .put('/api/v0/families/0')
       .set({ Authorization: `Bearer ${token}` })
       .send({
+        firstname: 'Jean-Edouard',
+        lastname: 'Test de la Haute',
+        mail: 'jetestdlhaute@test.com',
+        github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
-        vertical_trade: 'Maître Kebabier',
-        sms: false,
-        email: true,
-
-        id_user: 1,
+        picture:
+          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
       })
       .expect(404)
       .expect('Content-Type', /json/);
@@ -102,7 +105,7 @@ describe('PUT methods for notifications', () => {
   });
   it('PUT / error (fields missing)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/notifications/2')
+      .put('/api/v0/families/6')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
       .expect(422)
@@ -111,44 +114,46 @@ describe('PUT methods for notifications', () => {
   });
   it('PUT / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/notifications/2')
+      .put('/api/v0/families/6')
       .set({ Authorization: `Bearer ${token}` })
       .send({
+        firstname: 'Jean-Edouard',
+        lastname: 'Test de la Haute',
+        mail: 'jetestdlhaute@test.com',
+        github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
-        vertical_trade: 'Maître Kebabier',
-        sms: false,
-        email: true,
-
-        id_user: 1,
+        picture:
+          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
       })
       .expect(200)
       .expect('Content-Type', /json/);
 
     const expected = {
-      id: 2,
+      id: 6,
+      firstname: 'Jean-Edouard',
+      lastname: 'Test de la Haute',
+      mail: 'jetestdlhaute@test.com',
+      github: 'https://github.com/jetestdlhaute',
       zone: 'BAB',
-      vertical_trade: 'Maître Kebabier',
-      sms: false,
-      email: true,
-
-      id_user: 1,
+      picture:
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
     };
     expect(res.body).toEqual(expected);
   });
 });
-// NOTIFICATIONS DELETE
-describe('DELETE methods for notifications', () => {
+// FAMILIES DELETE
+describe('DELETE methods for families', () => {
   it('DELETE / error (wrong id)', async () => {
     const res = await supertest(app)
-      .delete('/api/v0/notifications/0')
+      .delete('/api/v0/families/0')
       .set({ Authorization: `Bearer ${token}` })
       .expect(404)
       .expect('Content-Type', /json/);
     expect(res.body).toHaveProperty('message');
   });
-  it('DELETE / OK (notification successfully deleted)', async () => {
+  it('DELETE / OK (user successfully deleted)', async () => {
     await supertest(app)
-      .delete('/api/v0/notifications/2')
+      .delete('/api/v0/families/6')
       .set({ Authorization: `Bearer ${token}` })
       .expect(204);
   });

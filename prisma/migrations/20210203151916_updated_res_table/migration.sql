@@ -50,12 +50,13 @@ UNIQUE INDEX `user.email_unique`(`email`),
 
 -- CreateTable
 CREATE TABLE `reservation` (
+    `id` INT NOT NULL AUTO_INCREMENT,
     `id_property` INT NOT NULL,
     `id_user` INT NOT NULL,
     `start_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `end_date` DATETIME(3) NOT NULL,
 
-    PRIMARY KEY (`id_property`,`id_user`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey

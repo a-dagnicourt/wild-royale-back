@@ -1,10 +1,10 @@
 const express = require('express');
 
 const users = require('./users');
-const roles = require('./roles');
-const companies = require('./companies');
-const notifications = require('./notifications');
-const products = require('./products');
+const pictures = require('./pictures');
+const properties = require('./properties');
+const families = require('./families');
+const reservations = require('./reservations');
 const auth = require('./auth');
 
 const router = express.Router();
@@ -16,10 +16,10 @@ router.get('/', (req, res) => {
 });
 
 router.use('/users', users);
-router.use('/roles', roles);
-router.use('/companies', companies);
-router.use('/notifications', notifications);
-router.use('/products', products);
+router.use('/pictures', pictures);
+router.use('/properties', properties);
+router.use('/families', families);
+router.use('/reservations', reservations);
 router.use('/auth', auth);
 
 module.exports = router;

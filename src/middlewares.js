@@ -35,7 +35,7 @@ function checkToken(req, res, next) {
         ...decoded,
       };
       // extract role from user req for role check function
-      jwtRole = decoded.role;
+      jwtRole = decoded.isAdmin;
       next();
     });
   } catch (error) {
