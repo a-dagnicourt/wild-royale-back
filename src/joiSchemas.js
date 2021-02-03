@@ -75,7 +75,7 @@ const valProperty = Joi.object().keys({
   // Property lat & longmust be 6 to 9 long string (ex: -100.0000)
   lat: Joi.string().min(6).max(8).required(),
   long: Joi.string().min(6).max(9).required(),
-  // Property picutre must be a valid url (ex: "https://test.com/test.jpg")
+  // Property picture must be a valid url (ex: "https://test.com/test.jpg")
   pictureUrl: Joi.string().uri().required(),
   // Property label must be a 3 to 60 long string (ex: Wow incredible castle !)
   pictureAlt: Joi.string().min(3).max(60).required(),
@@ -84,9 +84,55 @@ const valProperty = Joi.object().keys({
 const valPropertyForUpdate = Joi.object().keys({
   // Property label must be a 3 to 30 long string (ex: Super-Net @gency 2000 !)
   label: Joi.string().min(3).max(30).required(),
-  // Property lat & longmust be 6 to 9 long string (ex: -100.0000)
+  // Property lat & long must be 6 to 9 long string (ex: -100.0000)
   lat: Joi.string().min(6).max(8).required(),
   long: Joi.string().min(6).max(9).required(),
+});
+
+const valFamily = Joi.object().keys({
+  // Firstname can can be 3 to 30 char long, contain multiple words separated by whitespace, ', -, must end by a letter and be 3 to 30 char long (ex: Jean-Noêl)
+  firstname: Joi.string()
+    .regex(/^[A-zÀ-ÿ]+((\s)?(('|-|)?([A-zÀ-ÿ])+))*$/)
+    .min(3)
+    .max(30)
+    .required(),
+  // Lastname can can be 3 to 30 char long, contain multiple words separated by whitespace, ', -, must end by a letter and be 3 to 30 char long (ex: O'Connor de-la Bath)
+  lastname: Joi.string()
+    .regex(/^[A-zÀ-ÿ]+((\s)?(('|-|)?([A-zÀ-ÿ])+))*$/)
+    .min(3)
+    .max(30)
+    .required(),
+  // Email must be in email@email.com format (ex: contact@ftm.fr)
+  mail: Joi.string().email(),
+  // Family member github page must be a valid url (ex: "https://github.com/test/")
+  github: Joi.string().uri(),
+  // Property zone must be 3 to 60 long string (ex: "BAB")
+  zone: Joi.string().min(3).max(60),
+  // Family member picture must be a valid url (ex: "https://test.com/test.jpg")
+  picture: Joi.string().uri().required(),
+});
+
+const valFamilyForPutRoute = Joi.object().keys({
+  // Firstname can can be 3 to 30 char long, contain multiple words separated by whitespace, ', -, must end by a letter and be 3 to 30 char long (ex: Jean-Noêl)
+  firstname: Joi.string()
+    .regex(/^[A-zÀ-ÿ]+((\s)?(('|-|)?([A-zÀ-ÿ])+))*$/)
+    .min(3)
+    .max(30)
+    .required(),
+  // Lastname can can be 3 to 30 char long, contain multiple words separated by whitespace, ', -, must end by a letter and be 3 to 30 char long (ex: O'Connor de-la Bath)
+  lastname: Joi.string()
+    .regex(/^[A-zÀ-ÿ]+((\s)?(('|-|)?([A-zÀ-ÿ])+))*$/)
+    .min(3)
+    .max(30)
+    .required(),
+  // Email must be in email@email.com format (ex: contact@ftm.fr)
+  mail: Joi.string().email(),
+  // Family member github page must be a valid url (ex: "https://github.com/test/")
+  github: Joi.string().uri(),
+  // Property zone must be 3 to 60 long string (ex: "BAB")
+  zone: Joi.string().min(3).max(60),
+  // Family member picture must be a valid url (ex: "https://test.com/test.jpg")
+  picture: Joi.string().uri(),
 });
 
 module.exports = {
@@ -97,4 +143,6 @@ module.exports = {
   valNotif,
   valProperty,
   valPropertyForUpdate,
+  valFamily,
+  valFamilyForPutRoute,
 };

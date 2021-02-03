@@ -4,7 +4,7 @@ const users = require('./users');
 const roles = require('./roles');
 const properties = require('./properties');
 const notifications = require('./notifications');
-const products = require('./products');
+const families = require('./families');
 const auth = require('./auth');
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.use('/users', users);
 router.use('/roles', roles);
 router.use('/properties', properties);
 router.use('/notifications', notifications);
-router.use('/products', products);
+router.use('/families', families);
 router.use('/auth', auth);
 
 module.exports = router;
