@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model family {
+  id        Int     @id @default(autoincrement())
+  firstname String
+  lastname  String
+  mail      String? @unique
+  github    String? @unique
+  zone      String?
+  picture   String
+}
+
+model property {
+  id          Int           @id @default(autoincrement())
+  label       String        @unique
+  lat         String
+  long        String
+  // Explicite many to many relation
+  reservation reservation[]
+  // Many to one relation
+  picture     picture[]
+}
+
+model picture {
+  id          Int      @id @default(autoincrement())
+  url         String
+  alt         String
+  // One to many relation
+  id_property Int
+  property    property @relation(fields: [id_property], references: [id])
+
+  @@index([id_property], name: "picture_property_FK")
+}
+
+model user {
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  password    String
+  firstname   String
+  lastname    String
+  isAdmin     Boolean       @default(false)
+  // Explicite many to many relation
+  reservation reservation[]
+}
+
+model reservation {
+  id_property Int
+  id_user     Int
+  start_date  DateTime @default(now())
+  end_date    DateTime
+  // Foreign Keys
+  property    property @relation(fields: [id_property], references: [id])
+  user        user     @relation(fields: [id_user], references: [id])
+
+  @@id([id_property, id_user])
+}
