@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-param-reassign */
 const express = require('express');
-const { valFamily, valFamilyForPutRoute } = require('../joiSchemas');
+const { valFamily, valFamilyForUpdate } = require('../joiSchemas');
 const prisma = require('../prismaClient');
 const { joiValidation, checkToken, checkRole } = require('../middlewares');
 
@@ -173,7 +173,7 @@ router.put(
   checkToken,
   // Allows only admin
   checkRole(true),
-  joiValidation(valFamilyForPutRoute),
+  joiValidation(valFamilyForUpdate),
   async (req, res, next) => {
     const { id } = req.params;
     const data = req.body;

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-param-reassign */
 const express = require('express');
-const { valUser, valUserForPutRoute } = require('../joiSchemas');
+const { valUser, valUserForUpdate } = require('../joiSchemas');
 const prisma = require('../prismaClient');
 const { hashPassword } = require('../util');
 const { joiValidation, checkToken, checkRole } = require('../middlewares');
@@ -182,7 +182,7 @@ router.put(
   checkToken,
   // Allows only admin
   checkRole(true),
-  joiValidation(valUserForPutRoute),
+  joiValidation(valUserForUpdate),
   async (req, res, next) => {
     const { id } = req.params;
     const { password, firstname, lastname, email, isAdmin } = req.body;

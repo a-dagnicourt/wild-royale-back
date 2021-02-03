@@ -25,7 +25,7 @@ const valUser = Joi.object().keys({
   isAdmin: Joi.boolean().required(),
 });
 
-const valUserForPutRoute = Joi.object().keys({
+const valUserForUpdate = Joi.object().keys({
   // Password must be 8 character long atleast and contain 1 lowercase, 1 uppercase, 1 special char and 1 number (ex : P@ssw0rdÿ1234)
   password: Joi.string().regex(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/
@@ -112,7 +112,7 @@ const valFamily = Joi.object().keys({
   picture: Joi.string().uri().required(),
 });
 
-const valFamilyForPutRoute = Joi.object().keys({
+const valFamilyForUpdate = Joi.object().keys({
   // Firstname can can be 3 to 30 char long, contain multiple words separated by whitespace, ', -, must end by a letter and be 3 to 30 char long (ex: Jean-Noêl)
   firstname: Joi.string()
     .regex(/^[A-zÀ-ÿ]+((\s)?(('|-|)?([A-zÀ-ÿ])+))*$/)
@@ -135,14 +135,34 @@ const valFamilyForPutRoute = Joi.object().keys({
   picture: Joi.string().uri(),
 });
 
+const valPicture = Joi.object().keys({
+  // Picture url must be valid (ex: "https://test.com/test.jpg")
+  url: Joi.string().uri().required(),
+  // Picture alt text must be a 3 to 60 long string (ex: Wow incredible castle !)
+  alt: Joi.string().min(3).max(60).required(),
+  // Picture property id must be an integer
+  property: Joi.number().required(),
+});
+
+const valPictureForUpdate = Joi.object().keys({
+  // Picture url must be valid (ex: "https://test.com/test.jpg")
+  url: Joi.string().uri().required(),
+  // Picture alt text must be a 3 to 60 long string (ex: Wow incredible castle !)
+  alt: Joi.string().min(3).max(60).required(),
+  // Picture property id must be an integer
+  property: Joi.number(),
+});
+
 module.exports = {
   valUser,
-  valUserForPutRoute,
+  valUserForUpdate,
   valRole,
   valProduct,
   valNotif,
   valProperty,
   valPropertyForUpdate,
   valFamily,
-  valFamilyForPutRoute,
+  valFamilyForUpdate,
+  valPicture,
+  valPictureForUpdate,
 };

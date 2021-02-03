@@ -1,9 +1,8 @@
 const express = require('express');
 
 const users = require('./users');
-const roles = require('./roles');
+const pictures = require('./pictures');
 const properties = require('./properties');
-const notifications = require('./notifications');
 const families = require('./families');
 const auth = require('./auth');
 
@@ -16,9 +15,8 @@ router.get('/', (req, res) => {
 });
 
 router.use('/users', users);
-router.use('/roles', roles);
+router.use('/pictures', pictures);
 router.use('/properties', properties);
-router.use('/notifications', notifications);
 router.use('/families', families);
 router.use('/auth', auth);
 
