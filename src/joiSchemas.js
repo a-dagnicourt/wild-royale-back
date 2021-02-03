@@ -79,8 +79,8 @@ const valFamily = Joi.object().keys({
     .min(3)
     .max(30)
     .required(),
-  // Email must be in email@email.com format (ex: contact@ftm.fr)
-  mail: Joi.string().email(),
+  // Linkedin url must be must be a valid url (ex: "https://www.linkedin.com/in/test/")
+  linkedin: Joi.string().uri(),
   // Family member github page must be a valid url (ex: "https://github.com/test/")
   github: Joi.string().uri(),
   // Property zone must be 3 to 60 long string (ex: "BAB")
@@ -102,8 +102,8 @@ const valFamilyForUpdate = Joi.object().keys({
     .min(3)
     .max(30)
     .required(),
-  // Email must be in email@email.com format (ex: contact@ftm.fr)
-  mail: Joi.string().email(),
+  // Linkedin url must be must be a valid url (ex: "https://www.linkedin.com/in/test/")
+  linkedin: Joi.string().uri(),
   // Family member github page must be a valid url (ex: "https://github.com/test/")
   github: Joi.string().uri(),
   // Property zone must be 3 to 60 long string (ex: "BAB")

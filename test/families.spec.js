@@ -63,7 +63,7 @@ describe('POST methods for families', () => {
       .send({
         firstname: 'Jean-Edouard',
         lastname: 'Test de la Haute',
-        mail: 'jetestdlhaute@test.com',
+        linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
         github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
         picture:
@@ -75,7 +75,7 @@ describe('POST methods for families', () => {
       id: 6,
       firstname: 'Jean-Edouard',
       lastname: 'Test de la Haute',
-      mail: 'jetestdlhaute@test.com',
+      linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
       github: 'https://github.com/jetestdlhaute',
       zone: 'BAB',
       picture:
@@ -93,7 +93,7 @@ describe('PUT methods for families', () => {
       .send({
         firstname: 'Jean-Edouard',
         lastname: 'Test de la Haute',
-        mail: 'jetestdlhaute@test.com',
+        linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
         github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
         picture:
@@ -119,7 +119,7 @@ describe('PUT methods for families', () => {
       .send({
         firstname: 'Jean-Edouard',
         lastname: 'Test de la Haute',
-        mail: 'jetestdlhaute@test.com',
+        linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
         github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
         picture:
@@ -132,7 +132,7 @@ describe('PUT methods for families', () => {
       id: 6,
       firstname: 'Jean-Edouard',
       lastname: 'Test de la Haute',
-      mail: 'jetestdlhaute@test.com',
+      linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
       github: 'https://github.com/jetestdlhaute',
       zone: 'BAB',
       picture:

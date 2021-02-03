@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
+
 const prisma = require('../../src/prismaClient');
 const { hashPassword } = require('../../src/util');
+
+const { PORT } = process.env;
 
 (async () => {
   // DATA RESET (Delete all data and set id incremenent back to initial value)
@@ -18,44 +21,44 @@ const { hashPassword } = require('../../src/util');
   // FAMILY SEEDS (Add all 15 members, 16th is admin)
   const family = [
     [
-      'Raphaël',
-      'Lefevre',
-      'test@test.com',
-      'https://github.com/test',
+      'Albin',
+      'Marchand',
+      'https://www.linkedin.com/in/albinmarchand/',
+      'https://github.com/Albin-Marchand',
       'BAB',
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      `http://localhost:${PORT}/media/3CC2DE2D-F6EA-4B23-93E6-98F490D0BE01_1_105_c.jpeg`,
     ],
     [
-      'Nelly',
-      'Chieng',
-      'test2@test.com',
-      'https://github.com/test2',
+      'Alexandre',
+      'Dagnicourt',
+      'https://www.linkedin.com/in/alexandre-dagnicourt/',
+      'https://github.com/a-dagnicourt',
       'BAB',
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      `http://localhost:${PORT}/media/F48D56B8-4A94-42B8-9149-884A0AF06F15_1_105_c.jpeg`,
     ],
     [
-      'Laura ',
+      'David',
+      'Mosca',
+      'https://www.linkedin.com/in/david-mosca-b0464459/',
+      'https://github.com/DavidDvpt',
+      'BAB',
+      `http://localhost:${PORT}/media/9F4E4640-F174-4304-8CA5-B24AEE74D778_1_105_c.jpeg`,
+    ],
+    [
+      'Laura',
       'Glutron',
-      'test3@test.com',
-      'https://github.com/test3',
+      'https://www.linkedin.com/in/diane-casanova-8916a4198/',
+      'https://github.com/dianecasanova',
       'BAB',
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      `http://localhost:${PORT}/media/FDAF9B1E-3D54-450B-9B2E-A95BBD94A8BA_1_105_c.jpeg`,
     ],
     [
-      'Renaud ',
-      'Fournet',
-      'test4@test.com',
-      'https://github.com/test4',
-      'BAB',
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-    ],
-    [
-      'Diane ',
+      'Diane',
       'Casanova',
-      'test5@test.com',
-      'https://github.com/test5',
+      'https://www.linkedin.com/in/laura-glutron/',
+      'https://github.com/lauraglutron',
       'BAB',
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      `http://localhost:${PORT}/media/34A46313-7C2D-4712-BF51-320EFA04452C_1_105_c.jpeg`,
     ],
   ];
   const familySeeds = family.map((el) => {
@@ -63,7 +66,7 @@ const { hashPassword } = require('../../src/util');
       data: {
         firstname: el[0],
         lastname: el[1],
-        mail: el[2],
+        linkedin: el[2],
         github: el[3],
         zone: el[4],
         picture: el[5],
