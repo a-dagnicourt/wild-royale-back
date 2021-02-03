@@ -6,111 +6,142 @@ const { hashPassword } = require('../../src/util');
   // DATA RESET (Delete all data and set id incremenent back to initial value)
   await prisma.$executeRaw('DELETE FROM user;');
   await prisma.$executeRaw('ALTER TABLE user AUTO_INCREMENT = 1;');
-  await prisma.role.deleteMany({});
-  await prisma.$executeRaw('ALTER TABLE role AUTO_INCREMENT = 1;');
-  await prisma.product.deleteMany({});
-  await prisma.$executeRaw('ALTER TABLE product AUTO_INCREMENT = 1;');
-  await prisma.notification.deleteMany({});
-  await prisma.$executeRaw('ALTER TABLE notification AUTO_INCREMENT = 1;');
-  await prisma.company.deleteMany({});
-  await prisma.$executeRaw('ALTER TABLE company AUTO_INCREMENT = 1;');
+  await prisma.family.deleteMany({});
+  await prisma.$executeRaw('ALTER TABLE family AUTO_INCREMENT = 1;');
+  await prisma.property.deleteMany({});
+  await prisma.$executeRaw('ALTER TABLE property AUTO_INCREMENT = 1;');
+  await prisma.picture.deleteMany({});
+  await prisma.$executeRaw('ALTER TABLE picture AUTO_INCREMENT = 1;');
+  await prisma.reservation.deleteMany({});
+  await prisma.$executeRaw('ALTER TABLE reservation AUTO_INCREMENT = 1;');
 
-  // ROLES SEEDS (Add all 4 roles)
-  const roles = [
-    // FTM Team Admins
-    { label: 'superadmin' },
-    // Client Admins
-    { label: 'admin' },
-    // Clients
-    { label: 'user' },
-    // Temp role for clients waiting role attribution by FTM Team
-    { label: 'prospect' },
+  // FAMILY SEEDS (Add all 15 members, 16th is admin)
+  const family = [
+    [
+      'Raphaël',
+      'Lefevre',
+      'test@test.com',
+      'https://github.com/test',
+      'BAB',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    ],
+    [
+      'Nelly',
+      'Chieng',
+      'test2@test.com',
+      'https://github.com/test2',
+      'BAB',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    ],
+    [
+      'Laura ',
+      'Glutron',
+      'test3@test.com',
+      'https://github.com/test3',
+      'BAB',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    ],
+    [
+      'Renaud ',
+      'Fournet',
+      'test4@test.com',
+      'https://github.com/test4',
+      'BAB',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    ],
+    [
+      'Diane ',
+      'Casanova',
+      'test5@test.com',
+      'https://github.com/test5',
+      'BAB',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    ],
   ];
-  const rolesSeeds = roles.map((el) => {
-    return prisma.role.create({
+  const familySeeds = family.map((el) => {
+    return prisma.family.create({
       data: {
-        label: el.label,
+        firstname: el[0],
+        lastname: el[1],
+        mail: el[2],
+        github: el[3],
+        zone: el[4],
+        picture: el[5],
       },
     });
   });
-  await Promise.all(rolesSeeds)
+  await Promise.all(familySeeds)
     .then((res) => console.log(res))
     .catch((err) => console.log(err.message));
 
-  // PRODUCTS SEEDS
-  const products = [
-    // Follow The Market product
-    { label: 'ftmkt' },
-    // Follow The Data product
-    { label: 'ftd' },
-    // Follow The Mall product
-    { label: 'ftmall' },
-    // Follo The Map product
-    { label: 'ftmap' },
+  // PROPERTY SEEDS (Add all 15 members, 16th is admin)
+  const property = [
+    [
+      'Property 1',
+      '83.0773',
+      '-150.4348',
+      'https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg',
+      'Superb castle !',
+    ],
+    [
+      'Property 2',
+      '83.0773',
+      '-150.4348',
+      'https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg',
+      'Superb castle !',
+    ],
+    [
+      'Property 3',
+      '83.0773',
+      '-150.4348',
+      'https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg',
+      'Superb castle !',
+    ],
+    [
+      'Property 4',
+      '83.0773',
+      '-150.4348',
+      'https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg',
+      'Superb castle !',
+    ],
+    [
+      'Property 5',
+      '83.0773',
+      '-150.4348',
+      'https://upload.wikimedia.org/wikipedia/commons/a/ae/Castle_Neuschwanstein.jpg',
+      'Superb castle !',
+    ],
   ];
-  const productsSeeds = products.map((el) => {
-    return prisma.product.create({
+  const propertySeeds = property.map((el) => {
+    return prisma.property.create({
       data: {
-        label: el.label,
+        label: el[0],
+        lat: el[1],
+        long: el[2],
+        reservation: undefined,
+        picture: {
+          create: {
+            url: el[3],
+            alt: el[4],
+          },
+        },
       },
     });
   });
-  await Promise.all(productsSeeds)
+  await Promise.all(propertySeeds)
     .then((res) => console.log(res))
     .catch((err) => console.log(err.message));
 
-  // USERS SEEDS
+  // ADMIN SEED
   await prisma.user.create({
     data: {
-      // Creates 1 superdamin user
+      // Creates 1 damin user
+      email: 'admin@wildroyale.fr',
       password: hashPassword('P@ssw0rd'),
-      firstname: 'Nicolas',
-      lastname: 'Blicq',
-      email: 'nblicq@followthemarket.fr',
-      phone_number: '+33660877678',
-      job_title: 'Co-founder',
-      language: 'french',
-      // Creates 1 notification preferences
-      notification: {
-        create: {
-          zone: 'Lille',
-          vertical_trade: 'Product performance data',
-          sms: false,
-          email: true,
-        },
-      },
-      // Attributes superdamin role
-      role: {
-        connect: {
-          label: 'superadmin',
-        },
-      },
-      // Creates 1 product contract
-      productsOwned: {
-        create: {
-          product: {
-            // Connects to the Follow The Market product
-            connect: {
-              label: 'ftmkt',
-            },
-          },
-          // Add start and end dates of the contract
-          start_date: '2021-01-01T10:00:00.000Z',
-          end_date: '2021-12-01T10:00:00.000Z',
-        },
-      },
-      // Creates 1 company the user will be attached to
-      company: {
-        create: {
-          label: 'Follow The Market',
-          SIRET_number: '12345678912345',
-          VAT_number: 'FR12123456789',
-          city: 'Lille',
-          zip_code: '59000',
-          street: '165 avenue de Bretagne Euratechnologies',
-          country: 'FR',
-        },
-      },
+      firstname: 'Alexandre',
+      lastname: 'Dagnicourt',
+      isAdmin: true,
+      reservation: undefined,
     },
   });
 })().finally(async () => {
