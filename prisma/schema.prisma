@@ -51,6 +51,7 @@ model user {
 }
 
 model reservation {
+  id          Int      @id @default(autoincrement())
   id_property Int
   id_user     Int
   start_date  DateTime @default(now())
@@ -59,5 +60,4 @@ model reservation {
   property    property @relation(fields: [id_property], references: [id])
   user        user     @relation(fields: [id_user], references: [id])
 
-  @@id([id_property, id_user])
 }

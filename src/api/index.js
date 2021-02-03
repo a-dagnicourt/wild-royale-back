@@ -4,6 +4,7 @@ const users = require('./users');
 const pictures = require('./pictures');
 const properties = require('./properties');
 const families = require('./families');
+const reservations = require('./reservations');
 const auth = require('./auth');
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.use('/users', users);
 router.use('/pictures', pictures);
 router.use('/properties', properties);
 router.use('/families', families);
+router.use('/reservations', reservations);
 router.use('/auth', auth);
 
 module.exports = router;

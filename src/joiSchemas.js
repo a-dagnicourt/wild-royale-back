@@ -46,29 +46,6 @@ const valUserForUpdate = Joi.object().keys({
   isAdmin: Joi.boolean(),
 });
 
-const valRole = Joi.object().keys({
-  // Role can be 4 to 15 char long, contain multiple words separated by whitespace, ' or - and must end by a letter (cases: superadmin, admin, user, prospect)
-  label: Joi.string().min(4).max(15).required(),
-});
-
-const valProduct = Joi.object().keys({
-  // Product must be a 1 to 6 long string (cases : ftmkt, ftd, ftmall, ftmap)
-  label: Joi.string().min(1).max(6).required(),
-});
-
-const valNotif = Joi.object().keys({
-  // Zone must be a 3 to 30 long string (ex: Centre d'affaires LILLE REPUBLIQUE)
-  zone: Joi.string().min(3).max(30).required(),
-  // Vertical trade must be a 3 to 30 long string (ex: Product Data Marketing)
-  vertical_trade: Joi.string().min(3).max(30).required(),
-  // SMS preference must be a boolean (ex: false)
-  sms: Joi.boolean().required(),
-  // Email preference must be a boolean (ex: true)
-  email: Joi.boolean().required(),
-  // ID of user must be an integer (ex: 12)
-  id_user: Joi.number().integer().required(),
-});
-
 const valProperty = Joi.object().keys({
   // Property label must be a 3 to 30 long string (ex: Super-Net @gency 2000 !)
   label: Joi.string().min(3).max(30).required(),
@@ -153,16 +130,37 @@ const valPictureForUpdate = Joi.object().keys({
   property: Joi.number(),
 });
 
+const valRes = Joi.object().keys({
+  // Reservation property id must be an integer
+  property: Joi.number().required(),
+  // Reservation user id must be an integer
+  user: Joi.number().required(),
+  // Reservation start date must be a 24 long datetime format (ex: "2021-01-01T00:00:00.000Z")
+  start_date: Joi.string().length(24).required(),
+  // Reservation end date must be a 24 long datetime format (ex: "2021-01-01T00:00:00.000Z")
+  end_date: Joi.string().length(24).required(),
+});
+
+const valResForUpdate = Joi.object().keys({
+  // Reservation property id must be an integer
+  property: Joi.number(),
+  // Reservation user id must be an integer
+  user: Joi.number(),
+  // Reservation start date must be a 24 long datetime format (ex: "2021-01-01T00:00:00.000Z")
+  start_date: Joi.string().length(24).required(),
+  // Reservation end date must be a 24 long datetime format (ex: "2021-01-01T00:00:00.000Z")
+  end_date: Joi.string().length(24).required(),
+});
+
 module.exports = {
   valUser,
   valUserForUpdate,
-  valRole,
-  valProduct,
-  valNotif,
   valProperty,
   valPropertyForUpdate,
   valFamily,
   valFamilyForUpdate,
   valPicture,
   valPictureForUpdate,
+  valRes,
+  valResForUpdate,
 };
