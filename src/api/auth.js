@@ -32,12 +32,7 @@ router.post('/login', async (req, res, next) => {
         email,
       },
       // Includes all datas related to the user
-      include: {
-        role: true,
-        company: true,
-        notification: true,
-        productsOwned: true,
-      },
+      include: { reservation: true },
     });
 
     // If user isn't found, throw a 404 error
@@ -65,7 +60,7 @@ router.post('/login', async (req, res, next) => {
     const token = jwt.sign(
       {
         email: user.email,
-        role: user.role[0].label,
+        isAdmin: user.isAdmin,
       },
       PRIVATE_KEY,
       {

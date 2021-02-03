@@ -9,7 +9,7 @@ beforeAll((done) => {
   supertest(app)
     .post('/api/v0/auth/login')
     .send({
-      email: 'nblicq@followthemarket.fr',
+      email: 'admin@wildroyale.fr',
       password: 'P@ssw0rd',
     })
     .end((err, response) => {
@@ -62,25 +62,20 @@ describe('POST methods for users', () => {
       .post('/api/v0/users')
       .set({ Authorization: `Bearer ${token}` })
       .send({
+        email: 'jeantest@wcs.fr',
         password: hashPassword('P@ssw0rdÿ'),
         firstname: 'José Michel',
         lastname: "O'Connor",
-        email: 'jeantest@wcs.fr',
-        phone_number: '+33601020301',
-        job_title: "Etudiant de l'année",
-        language: 'French',
-        companySIRET: '12345678912345',
+        isAdmin: false,
       })
       .expect(201)
       .expect('Content-Type', /json/);
     const expected = {
       id: 2,
+      email: 'jeantest@wcs.fr',
       firstname: 'José Michel',
       lastname: "O'Connor",
-      email: 'jeantest@wcs.fr',
-      phone_number: '+33601020301',
-      job_title: "Etudiant de l'année",
-      language: 'French',
+      isAdmin: false,
     };
     expect(res.body).toEqual(expected);
   });
@@ -93,17 +88,10 @@ describe('PUT methods for users', () => {
       .set({ Authorization: `Bearer ${token}` })
       .send({
         password: hashPassword('P@ssw0rdÿ'),
+        email: 'jeantest@wcs.fr',
         firstname: 'José Michel',
         lastname: "O'Connor",
-        email: 'jeantest@wcs.fr',
-        phone_number: '+33601020301',
-        job_title: "Etudiant de l'année",
-        language: 'French',
-        productsOwned: '1',
-        productStartDate: '2021-01-01T10:00:00.000Z',
-        productEndDate: '2021-12-01T10:00:00.000Z',
-        role: 'admin',
-        companySIRET: '12345678912345',
+        isAdmin: false,
       })
       .expect(404)
       .expect('Content-Type', /json/);
@@ -114,7 +102,7 @@ describe('PUT methods for users', () => {
       .put('/api/v0/users/2')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
-      .expect(422)
+      .expect(404)
       .expect('Content-Type', /json/);
     expect(res.body).toHaveProperty('message');
   });
@@ -124,29 +112,20 @@ describe('PUT methods for users', () => {
       .set({ Authorization: `Bearer ${token}` })
       .send({
         password: hashPassword('P@ssw0rdÿ'),
+        email: 'jeantest@wcs.fr',
         firstname: 'José Michel',
         lastname: "O'Connor",
-        email: 'jeantest@wcs.fr',
-        phone_number: '+33601020301',
-        job_title: "Etudiant de l'année",
-        language: 'French',
-        productsOwned: '1',
-        productStartDate: '2021-01-01T10:00:00.000Z',
-        productEndDate: '2021-12-01T10:00:00.000Z',
-        role: 'admin',
-        companySIRET: '12345678912345',
+        isAdmin: false,
       })
       .expect(200)
       .expect('Content-Type', /json/);
 
     const expected = {
       id: 2,
+      email: 'jeantest@wcs.fr',
       firstname: 'José Michel',
       lastname: "O'Connor",
-      email: 'jeantest@wcs.fr',
-      phone_number: '+33601020301',
-      job_title: "Etudiant de l'année",
-      language: 'French',
+      isAdmin: false,
     };
     expect(res.body).toEqual(expected);
   });

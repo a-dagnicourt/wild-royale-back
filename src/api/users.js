@@ -12,43 +12,31 @@ const router = express.Router();
  * A user (with id for output display)
  * @typedef {object} DisplayUser
  * @property {number} id.required - 1
+ * @property {string} email - "jmoconnor@ftm.com"
  * @property {string} password - "P@ssw0rd"
  * @property {string} firstname - "Jean-Michel"
  * @property {string} lastname - "O'Connor de la Tour"
- * @property {string} email - "jmoconnor@ftm.com"
- * @property {string} phone_number - "+33601020304"
- * @property {string} job_title - "Beta Testeur"
- * @property {string} language - "french"
+ * @property {boolean} isAdmin - false
  */
 
 /**
  * A user
  * @typedef {object} PostUser
+ * @property {string} email - "jmoconnor@ftm.com"
  * @property {string} password - "P@ssw0rd"
  * @property {string} firstname - "Jean-Michel"
  * @property {string} lastname - "O'Connor de la Tour"
- * @property {string} email - "jmoconnor@ftm.com"
- * @property {string} phone_number - "+33601020304"
- * @property {string} job_title - "Beta Testeur"
- * @property {string} language - "french"
- * @property {string} companySIRET - 12345678912345
+ * @property {boolean} isAdmin - false
  */
 
 /**
  * A user
  * @typedef {object} UpdateUser
+ * @property {string} email - "jmoconnor@ftm.com"
  * @property {string} password - "P@ssw0rd"
  * @property {string} firstname - "Jean-Michel"
  * @property {string} lastname - "O'Connor de la Tour"
- * @property {string} email - "jmoconnor@ftm.com"
- * @property {string} phone_number - "+33601020304"
- * @property {string} job_title - "Beta Testeur"
- * @property {string} language - "french"
- * @property {string} productsOwned - "1"
- * @property {string} productStartDate - "2021-01-01T10:00:00.000Z"
- * @property {string} productEndDate - "2021-01-01T10:00:00.000Z"
- * @property {string} role - "user"
- * @property {string} companySIRET - "12345678912345"
+ * @property {boolean} isAdmin - false
  */
 
 /**
@@ -59,32 +47,21 @@ const router = express.Router();
  * @return {object} 400 - Bad request
  * @security bearerAuth
  */
-router.get(
-  '/',
-  checkToken,
-  // Allows every role except prospect
-  checkRole('superadmin' || 'admin' || 'user'),
-  async (req, res, next) => {
-    try {
-      // Gets all users with their role, companies, products owned and notifications preferences.
-      const users = await prisma.user.findMany({
-        include: {
-          role: true,
-          company: true,
-          productsOwned: true,
-          notification: true,
-        },
-      });
-      // Returns a 200 'OK' HTTP code response + all infos JSON
-      return res.status(200).json(users);
-      // Returns a 400 'Bad Request' if any error occurs
-    } catch (error) {
-      res.status(400);
-      // Triggers the error handling middleware
-      return next(error);
-    }
+router.get('/', checkToken, async (req, res, next) => {
+  try {
+    // Gets all users with their role, companies, products owned and notifications preferences.
+    const users = await prisma.user.findMany({
+      include: { reservation: true },
+    });
+    // Returns a 200 'OK' HTTP code response + all infos JSON
+    return res.status(200).json(users);
+    // Returns a 400 'Bad Request' if any error occurs
+  } catch (error) {
+    res.status(400);
+    // Triggers the error handling middleware
+    return next(error);
   }
-);
+});
 
 /**
  * GET /api/v0/users/{id}
@@ -98,8 +75,8 @@ router.get(
 router.get(
   '/:id',
   checkToken,
-  // Allows every role except prospect
-  checkRole('superadmin' || 'admin' || 'user'),
+  // Allows only admin
+  checkRole(true),
   async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -108,12 +85,7 @@ router.get(
         where: {
           id: parseInt(id, 10),
         },
-        include: {
-          role: true,
-          company: true,
-          productsOwned: true,
-          notification: true,
-        },
+        include: { reservation: true },
       });
 
       if (!user) {
@@ -140,16 +112,7 @@ router.get(
  */
 // Open route for signup purpose
 router.post('/', joiValidation(valUser), async (req, res, next) => {
-  const {
-    password,
-    firstname,
-    lastname,
-    email,
-    phone_number,
-    job_title,
-    language,
-    companySIRET,
-  } = req.body;
+  const { password, firstname, lastname, email } = req.body;
   try {
     // Creates a user with all infos infos provided by body and connect it to a temporary 'prospect' role and to a company with it's provided SIRET
     const user = await prisma.user.create({
@@ -158,19 +121,6 @@ router.post('/', joiValidation(valUser), async (req, res, next) => {
         firstname,
         lastname,
         email,
-        phone_number,
-        job_title,
-        language,
-        role: {
-          connect: {
-            label: 'prospect',
-          },
-        },
-        company: {
-          connect: {
-            SIRET_number: companySIRET,
-          },
-        },
       },
     });
     // Deletes password field from response for security purpose
@@ -196,8 +146,8 @@ router.post('/', joiValidation(valUser), async (req, res, next) => {
 router.delete(
   '/:id',
   checkToken,
-  // Allows only superadmin and admin
-  checkRole('superadmin' || 'admin'),
+  // Allows only admin
+  checkRole(true),
   async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -236,35 +186,13 @@ router.delete(
 router.put(
   '/:id',
   checkToken,
-  // Allows only superadmin and admin
-  checkRole('superadmin' || 'admin'),
+  // Allows only admin
+  checkRole(true),
   joiValidation(valUserForPutRoute),
   async (req, res, next) => {
     const { id } = req.params;
-    const {
-      password,
-      firstname,
-      lastname,
-      email,
-      phone_number,
-      job_title,
-      language,
-      productStartDate,
-      productEndDate,
-      productsOwned,
-      role,
-      companySIRET,
-    } = req.body;
+    const { password, firstname, lastname, email, isAdmin } = req.body;
     try {
-      // Gets the id provided user including his role
-      const user = await prisma.user.findUnique({
-        where: {
-          id: parseInt(id, 10),
-        },
-        include: {
-          role: true,
-        },
-      });
       // Updates the user with body provided infos
       const updatedUser = await prisma.user.update({
         where: {
@@ -275,50 +203,13 @@ router.put(
           firstname,
           lastname,
           email,
-          phone_number,
-          job_title,
-          language,
-          role: {
-            disconnect: {
-              label: user.role[0].label,
-            },
-            connect: {
-              label: role,
-            },
-          },
-          // Connects the user to the company by its SIRET number
-          company: {
-            connect: {
-              SIRET_number: companySIRET,
-            },
-          },
-          // Connects to a products and adds start and end dates OR creates it if it doesn't exist yet
-          productsOwned: {
-            connectOrCreate: {
-              where: {
-                id_product_id_user: {
-                  id_product: parseInt(productsOwned, 10),
-                  id_user: parseInt(id, 10),
-                },
-              },
-              create: {
-                start_date: productStartDate,
-                end_date: productEndDate,
-                product: {
-                  connect: {
-                    id: parseInt(productsOwned, 10),
-                  },
-                },
-              },
-            },
-          },
+          isAdmin,
         },
       });
       delete updatedUser.password;
       return res.status(200).json(updatedUser);
     } catch (error) {
       res.status(404);
-
       return next(error);
     }
   }

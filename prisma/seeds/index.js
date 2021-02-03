@@ -4,16 +4,16 @@ const { hashPassword } = require('../../src/util');
 
 (async () => {
   // DATA RESET (Delete all data and set id incremenent back to initial value)
-  await prisma.$executeRaw('DELETE FROM user;');
-  await prisma.$executeRaw('ALTER TABLE user AUTO_INCREMENT = 1;');
-  await prisma.family.deleteMany({});
-  await prisma.$executeRaw('ALTER TABLE family AUTO_INCREMENT = 1;');
-  await prisma.property.deleteMany({});
-  await prisma.$executeRaw('ALTER TABLE property AUTO_INCREMENT = 1;');
-  await prisma.picture.deleteMany({});
-  await prisma.$executeRaw('ALTER TABLE picture AUTO_INCREMENT = 1;');
   await prisma.reservation.deleteMany({});
   await prisma.$executeRaw('ALTER TABLE reservation AUTO_INCREMENT = 1;');
+  await prisma.picture.deleteMany({});
+  await prisma.$executeRaw('ALTER TABLE picture AUTO_INCREMENT = 1;');
+  await prisma.property.deleteMany({});
+  await prisma.$executeRaw('ALTER TABLE property AUTO_INCREMENT = 1;');
+  await prisma.family.deleteMany({});
+  await prisma.$executeRaw('ALTER TABLE family AUTO_INCREMENT = 1;');
+  await prisma.$executeRaw('DELETE FROM user;');
+  await prisma.$executeRaw('ALTER TABLE user AUTO_INCREMENT = 1;');
 
   // FAMILY SEEDS (Add all 15 members, 16th is admin)
   const family = [
