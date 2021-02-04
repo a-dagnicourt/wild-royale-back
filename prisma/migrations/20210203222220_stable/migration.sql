@@ -3,11 +3,11 @@ CREATE TABLE `family` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `firstname` VARCHAR(191) NOT NULL,
     `lastname` VARCHAR(191) NOT NULL,
-    `mail` VARCHAR(191),
+    `linkedin` VARCHAR(191),
     `github` VARCHAR(191),
     `zone` VARCHAR(191),
     `picture` VARCHAR(191) NOT NULL,
-UNIQUE INDEX `family.mail_unique`(`mail`),
+UNIQUE INDEX `family.linkedin_unique`(`linkedin`),
 UNIQUE INDEX `family.github_unique`(`github`),
 
     PRIMARY KEY (`id`)

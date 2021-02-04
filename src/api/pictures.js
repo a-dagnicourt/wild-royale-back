@@ -1,7 +1,14 @@
 const express = require('express');
 const { valPicture, valPictureForUpdate } = require('../joiSchemas');
 const prisma = require('../prismaClient');
-const { joiValidation, checkToken, checkRole } = require('../middlewares');
+const {
+  joiValidation,
+  checkToken,
+  checkRole,
+  upload,
+} = require('../middlewares');
+
+const { PORT } = process.env;
 
 const router = express.Router();
 
@@ -28,6 +35,19 @@ const router = express.Router();
  * @property {string} alt - "Lorem ipsum"
  *  @property {number} id_property - 1
  */
+
+// PICTURES UPLOAD
+router.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.status(403).json(err);
+      // { message: 'Error : file type must be .jpg, .jpeg or .png' });
+    }
+    return res.status(201).json({
+      path: `${req.protocol}://${req.hostname}:${PORT}/${req.file.path}`,
+    });
+  });
+});
 
 /**
  * GET /api/v0/pictures

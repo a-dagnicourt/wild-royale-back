@@ -63,7 +63,7 @@ describe('POST methods for families', () => {
       .send({
         firstname: 'Jean-Edouard',
         lastname: 'Test de la Haute',
-        mail: 'jetestdlhaute@test.com',
+        linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
         github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
         picture:
@@ -72,10 +72,10 @@ describe('POST methods for families', () => {
       .expect(201)
       .expect('Content-Type', /json/);
     const expected = {
-      id: 6,
+      id: 17,
       firstname: 'Jean-Edouard',
       lastname: 'Test de la Haute',
-      mail: 'jetestdlhaute@test.com',
+      linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
       github: 'https://github.com/jetestdlhaute',
       zone: 'BAB',
       picture:
@@ -93,7 +93,7 @@ describe('PUT methods for families', () => {
       .send({
         firstname: 'Jean-Edouard',
         lastname: 'Test de la Haute',
-        mail: 'jetestdlhaute@test.com',
+        linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
         github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
         picture:
@@ -105,7 +105,7 @@ describe('PUT methods for families', () => {
   });
   it('PUT / error (fields missing)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/families/6')
+      .put('/api/v0/families/17')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
       .expect(422)
@@ -114,12 +114,12 @@ describe('PUT methods for families', () => {
   });
   it('PUT / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/families/6')
+      .put('/api/v0/families/17')
       .set({ Authorization: `Bearer ${token}` })
       .send({
         firstname: 'Jean-Edouard',
         lastname: 'Test de la Haute',
-        mail: 'jetestdlhaute@test.com',
+        linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
         github: 'https://github.com/jetestdlhaute',
         zone: 'BAB',
         picture:
@@ -129,10 +129,10 @@ describe('PUT methods for families', () => {
       .expect('Content-Type', /json/);
 
     const expected = {
-      id: 6,
+      id: 17,
       firstname: 'Jean-Edouard',
       lastname: 'Test de la Haute',
-      mail: 'jetestdlhaute@test.com',
+      linkedin: 'https://www.linkedin.com/in/jetestdlhaute',
       github: 'https://github.com/jetestdlhaute',
       zone: 'BAB',
       picture:
