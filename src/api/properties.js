@@ -189,7 +189,7 @@ router.put(
   joiValidation(valPropertyForUpdate),
   async (req, res, next) => {
     const { id } = req.params;
-    const data = req.body;
+    const { label, lat, long, pictureUrl, pictureAlt } = req.body;
 
     try {
       // Updates the id provided property
@@ -197,7 +197,17 @@ router.put(
         where: {
           id: parseInt(id, 10),
         },
-        data: { ...data },
+        data: {
+          label,
+          lat,
+          long,
+          picture: {
+            create: {
+              url: pictureUrl,
+              alt: pictureAlt,
+            },
+          },
+        },
       });
 
       return res.status(200).json(updateProperty);

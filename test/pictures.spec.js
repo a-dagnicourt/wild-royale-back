@@ -1,3 +1,4 @@
+const express = require('express');
 const supertest = require('supertest');
 const app = require('../src/app');
 const prisma = require('../src/prismaClient');
@@ -17,6 +18,28 @@ beforeAll((done) => {
     });
 });
 
+/// PICTURES UPLOAD POST
+// let uploadPath = '';
+// describe('POST methods for pictures media upload', () => {
+//   it('POST / error (bad file type)', async () => {
+//     const res = await supertest(app)
+//       .post('/api/v0/pictures/upload')
+//       .attach('media', './public/media/test.mpg')
+//       .expect(403)
+//       .expect('Content-Type', /json/);
+//     expect(res.body).toHaveProperty('message');
+//     uploadPath = res.body.path;
+//   });
+//   it('POST / OK (file uploaded)', async () => {
+//     const res = await supertest(app)
+//       .post('/api/v0/pictures/upload')
+//       .attach('media', './public/media/test.jpg')
+//       .expect(201)
+//       .expect('Content-Type', /json/);
+//     expect(res.body).toHaveProperty('path');
+//     uploadPath = res.body.path;
+//   });
+// });
 // PICTURES GET
 describe('GET methods for pictures', () => {
   it('GET /api/v0/pictures', async () => {

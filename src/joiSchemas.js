@@ -64,6 +64,10 @@ const valPropertyForUpdate = Joi.object().keys({
   // Property lat & long must be 6 to 9 long string (ex: -100.0000)
   lat: Joi.string().min(6).max(8).required(),
   long: Joi.string().min(6).max(9).required(),
+  // Property picture must be a valid url (ex: "https://test.com/test.jpg")
+  pictureUrl: Joi.string().uri(),
+  // Property label must be a 3 to 60 long string (ex: Wow incredible castle !)
+  pictureAlt: Joi.string().min(3).max(60),
 });
 
 const valFamily = Joi.object().keys({
