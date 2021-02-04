@@ -16,6 +16,7 @@ if (process.env.NODE_ENV !== 'test') {
   expressJSDocSwagger(app)(swaggerOptions);
   app.use(morgan('dev'));
 }
+app.use(express.static('public'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());

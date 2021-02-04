@@ -11,7 +11,7 @@ model family {
   id        Int     @id @default(autoincrement())
   firstname String
   lastname  String
-  mail      String? @unique
+  linkedin  String? @unique
   github    String? @unique
   zone      String?
   picture   String

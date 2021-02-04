@@ -1,5 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
 
 const { PRIVATE_KEY } = process.env;
 
@@ -100,6 +102,47 @@ const joiValidation = (schema) => async (req, res, next) => {
   }
 };
 
+// MULTER CONFIG
+// Storage path
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, './public/media');
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+    );
+  },
+});
+// Check files type
+const checkFileType = (file, cb) => {
+  // Allowed ext
+  const filetypes = /jpeg|jpg|png/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  }
+  return cb('Error: Images Only!');
+};
+// Upload options
+const upload = multer({
+  storage,
+  limits: {
+    fields: 5,
+    fieldNameSize: 10,
+    fieldSize: 2000,
+    fileSize: 25000000,
+  },
+  fileFilter(req, file, cb) {
+    checkFileType(file, cb);
+  },
+}).single('file');
+
 module.exports = {
   notFound,
   badRequest,
@@ -107,4 +150,5 @@ module.exports = {
   joiValidation,
   checkToken,
   checkRole,
+  upload,
 };

@@ -9,31 +9,33 @@ const router = express.Router();
  * A family (with id for output display)
  * @typedef {object} DisplayFamily
  * @property {number} id.required - 1
- * @property {string} email - "jmoconnor@ftm.com"
- * @property {string} password - "P@ssw0rd"
- * @property {string} firstname - "Jean-Michel"
- * @property {string} lastname - "O'Connor de la Tour"
- * @property {boolean} isAdmin - false
+ * @property {string} firstname - "Jean-Edouard"
+ * @property {string} lastname - "De la Haute"
+ * @property {string} linkedin - "https://www.linkedin.com/in/jedlh/"
+ * @property {string} github - "https://github.com/jedlh"
+ * @property {string} zone - "BAB"
+ * @property {string} picture - "http://localhost:5000/media/jedlh.jpeg"
  */
 
 /**
  * A family
  * @typedef {object} PostFamily
- * @property {string} email - "jmoconnor@ftm.com"
- * @property {string} password - "P@ssw0rd"
- * @property {string} firstname - "Jean-Michel"
- * @property {string} lastname - "O'Connor de la Tour"
- * @property {boolean} isAdmin - false
+ * @property {string} firstname - "Jean-Edouard"
+ * @property {string} lastname - "De la Haute"
+ * @property {string} linkedin - "https://www.linkedin.com/in/jedlh/"
+ * @property {string} github - "https://github.com/jedlh"
+ * @property {string} zone - "BAB"
+ * @property {string} picture - "http://localhost:5000/media/jedlh.jpeg"
  */
 
 /**
  * A family
- * @typedef {object} UpdateFamily
- * @property {string} email - "jmoconnor@ftm.com"
- * @property {string} password - "P@ssw0rd"
- * @property {string} firstname - "Jean-Michel"
- * @property {string} lastname - "O'Connor de la Tour"
- * @property {boolean} isAdmin - false
+ * @property {string} firstname - "Jean-Edouard"
+ * @property {string} lastname - "De la Haute"
+ * @property {string} linkedin - "https://www.linkedin.com/in/jedlh/"
+ * @property {string} github - "https://github.com/jedlh"
+ * @property {string} zone - "BAB"
+ * @property {string} picture - "http://localhost:5000/media/jedlh.jpeg"
  */
 
 /**
