@@ -226,12 +226,25 @@ const { PORT } = process.env;
   // ADMIN SEED
   await prisma.user.create({
     data: {
-      // Creates 1 damin user
+      // Creates 1 admin user
       email: 'admin@wildroyale.fr',
       password: hashPassword('P@ssw0rd'),
       firstname: 'Alexandre',
       lastname: 'Dagnicourt',
       isAdmin: true,
+      reservation: undefined,
+    },
+  });
+
+  // USER SEED
+  await prisma.user.create({
+    data: {
+      // Creates 1 user
+      email: 'user@wildroyale.fr',
+      password: hashPassword('P@ssw0rd'),
+      firstname: 'Jean',
+      lastname: 'Utilisateur',
+      isAdmin: false,
       reservation: undefined,
     },
   });

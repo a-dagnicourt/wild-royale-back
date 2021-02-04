@@ -44,7 +44,7 @@ router.post('/upload', (req, res) => {
       // { message: 'Error : file type must be .jpg, .jpeg or .png' });
     }
     return res.status(201).json({
-      path: `${req.protocol}://${req.hostname}:${PORT}/${req.file.path}`,
+      path: `${req.protocol}://${req.hostname}:${PORT}/media/${req.file.filename}`,
     });
   });
 });

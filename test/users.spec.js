@@ -71,7 +71,7 @@ describe('POST methods for users', () => {
       .expect(201)
       .expect('Content-Type', /json/);
     const expected = {
-      id: 2,
+      id: 3,
       email: 'jeantest@wcs.fr',
       firstname: 'José Michel',
       lastname: "O'Connor",
@@ -99,7 +99,7 @@ describe('PUT methods for users', () => {
   });
   it('PUT / error (fields missing)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/users/2')
+      .put('/api/v0/users/3')
       .set({ Authorization: `Bearer ${token}` })
       .send({})
       .expect(404)
@@ -108,7 +108,7 @@ describe('PUT methods for users', () => {
   });
   it('PUT / OK (fields provided)', async () => {
     const res = await supertest(app)
-      .put('/api/v0/users/2')
+      .put('/api/v0/users/3')
       .set({ Authorization: `Bearer ${token}` })
       .send({
         password: hashPassword('P@ssw0rdÿ'),
@@ -121,7 +121,7 @@ describe('PUT methods for users', () => {
       .expect('Content-Type', /json/);
 
     const expected = {
-      id: 2,
+      id: 3,
       email: 'jeantest@wcs.fr',
       firstname: 'José Michel',
       lastname: "O'Connor",
@@ -144,7 +144,7 @@ describe('DELETE methods for users', () => {
   // });
   it('DELETE / OK (user successfully deleted)', async () => {
     await supertest(app)
-      .delete('/api/v0/users/2')
+      .delete('/api/v0/users/3')
       .set({ Authorization: `Bearer ${token}` })
       .expect(204);
   });

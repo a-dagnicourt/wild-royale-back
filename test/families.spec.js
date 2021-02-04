@@ -153,7 +153,7 @@ describe('DELETE methods for families', () => {
   });
   it('DELETE / OK (user successfully deleted)', async () => {
     await supertest(app)
-      .delete('/api/v0/families/6')
+      .delete('/api/v0/families/17')
       .set({ Authorization: `Bearer ${token}` })
       .expect(204);
   });
